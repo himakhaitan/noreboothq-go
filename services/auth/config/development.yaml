@@ -1,0 +1,5 @@
+jwt:
+  secret_key: "devlopment_secret_key"
+
+logging:
+  level: "DEBUG"

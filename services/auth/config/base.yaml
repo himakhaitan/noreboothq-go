@@ -1,0 +1,8 @@
+server:
+  port: 8080
+
+jwt:
+  secret_key: "your_jwt_secret_key"
+
+logging:
+  level: "INFO"
