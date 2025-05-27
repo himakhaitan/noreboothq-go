@@ -2,9 +2,11 @@ package main
 
 import (
 	"github.com/himakhaitan/noreboothq/services/auth/config"
+	"github.com/himakhaitan/noreboothq/services/auth/server"
 	sharedConfig "github.com/himakhaitan/noreboothq/shared/config"
 	"github.com/himakhaitan/noreboothq/shared/env"
 	sharedLogger "github.com/himakhaitan/noreboothq/shared/logger"
+	"go.uber.org/zap"
 )
 
 func main() {
@@ -27,7 +29,6 @@ func main() {
 		sharedLogger.Config{
 			ServiceName: "auth-service",
 			Environment: resolved.Env,
-			Port:        cfg.Server.Port,
 		}, cfg.Log.Level,
 	)
 	if err != nil {
@@ -36,4 +37,9 @@ func main() {
 	defer sharedLogger.Sync() // flushes logs on exit
 
 	sharedLogger.Logger().Info("Auth Service Started")
+
+	grpcServer := server.NewGRPCServer(sharedLogger.Logger(), cfg.Server.Port)
+	if err := grpcServer.Start(); err != nil {
+		sharedLogger.Logger().Fatal("Failed to start gRPC server", zap.Error(err))
+	}
 }
