@@ -16,5 +16,5 @@ message LoginRequest {
 message LoginResponse {
   string access_token = 1;
   string token_type = 2; // e.g., "Bearer"
-  int64 expires_in = 3;  // in seconds
+  int64 expires_in = 3; // in seconds
 }
