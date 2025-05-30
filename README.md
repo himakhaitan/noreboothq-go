@@ -20,7 +20,6 @@ Ready to go beyond tutorials and build a system that companies actually need?
 <img alt="node-current" src="https://badgen.net/github/closed-issues/himakhaitan/noreboothq-go?style=flat-square&scale=1.4">
 </p>
 
----
 ## 📁 Project Overview
 
 NoRebootHQ is a Dynamic Configuration Management System that lets you manage, version, and roll out config changes and feature flags without restarting services.
