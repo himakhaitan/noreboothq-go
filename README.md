@@ -7,7 +7,6 @@
 <img alt="node-current" src="https://badgen.net/github/closed-issues/himakhaitan/nodejs_expressjs_template?style=flat-square&scale=1.4">
 </p>
 <h1 align="center">
-  <a>🖥️ NoRebootHQ</a>
   <br>  
   🖥️ NoRebootHQ — A Hands On Backend Project
   <br>
