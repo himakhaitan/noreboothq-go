@@ -4,7 +4,7 @@
 
 NoRebootHQ is a hands-on backend project where you'll build a production-grade system to manage, version, and deploy application configurations in real-time — without restarting services.
 
-
+a><img src="https://github.com/himakhaitan/noreboothq-go/blob/main/resources/banner.png?raw=true" width="150"></a>
 
 This is a starter repo that gives you the foundational project setup and structure you'll use to build the full platform using:
 
