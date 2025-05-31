@@ -124,6 +124,10 @@ Join the bootcamp or access the digital product on Topmate
 
 🔗 Join via Topmate
 
+## 💬 Join the Discussion
+
+Got questions, ideas, or feedback? Visit our [GitHub Discussions](https://github.com/himakhaitan/noreboothq-go/discussions) and join the conversation!
+
 ## ❓ Questions or Support
 
 If you have any questions, feel free to reach out!
