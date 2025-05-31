@@ -12,13 +12,13 @@ This is a starter repo that gives you the foundational project setup and structu
 
 Ready to go beyond tutorials and build a system that companies actually need?
 
-<p>
+<!-- <p>
 <img src="https://badgen.net/github/issues/himakhaitan/noreboothq-go?style=flat-square&scale=1.4">
 &nbsp;
 <img alt="node-current" src="https://badgen.net/github/stars/himakhaitan/noreboothq-go?style=flat-square&scale=1.4">&nbsp;
 <img alt="APM" src="https://badgen.net/github/forks/himakhaitan/noreboothq-go?style=flat-square&scale=1.4">&nbsp;
 <img alt="node-current" src="https://badgen.net/github/closed-issues/himakhaitan/noreboothq-go?style=flat-square&scale=1.4">
-</p>
+</p> -->
 
 ## 📁 Project Overview
 
