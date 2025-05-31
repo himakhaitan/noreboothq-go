@@ -11,5 +11,5 @@ func NewAuthController(userRepo *repository.UserRepository) *AuthController {
 }
 
 // func (c *AuthController) Login(ctx context.Context, email string, password string) (string, error) {
-
+//  // Handle user login logic here
 // }

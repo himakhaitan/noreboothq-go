@@ -1,11 +1,9 @@
 package server
 
 import (
+	"context"
 	"fmt"
 	"net"
-	"os"
-	"os/signal"
-	"syscall"
 	"time"
 
 	authpb "github.com/himakhaitan/noreboothq/proto/auth"
@@ -32,7 +30,7 @@ func NewGRPCServer(logger *zap.Logger, userRepo *repository.UserRepository, port
 	}
 }
 
-func (s *GRPCServer) Start() error {
+func (s *GRPCServer) Start(ctx context.Context) error {
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", s.port))
 	if err != nil {
 		return err
@@ -43,7 +41,6 @@ func (s *GRPCServer) Start() error {
 
 	authpb.RegisterAuthServiceServer(s.grpcServer, authHandler)
 
-	// Channel to listen for errors from grpcServer.Serve
 	serveErrCh := make(chan error, 1)
 
 	go func() {
@@ -51,22 +48,16 @@ func (s *GRPCServer) Start() error {
 		serveErrCh <- s.grpcServer.Serve(lis)
 	}()
 
-	// Channel to listen for OS signals
-	stopCh := make(chan os.Signal, 1)
-	signal.Notify(stopCh, os.Interrupt, syscall.SIGTERM)
-
 	select {
-	case sig := <-stopCh:
-		s.logger.Info("Shutdown signal received", zap.String("signal", sig.String()))
+	case <-ctx.Done():
+		s.logger.Info("Context canceled, shutting down gRPC server", zap.String("reason", ctx.Err().Error()))
 
-		// Graceful stop with timeout context
 		doneCh := make(chan struct{})
 		go func() {
 			s.grpcServer.GracefulStop()
 			close(doneCh)
 		}()
 
-		// Wait for graceful stop or timeout
 		select {
 		case <-doneCh:
 			s.logger.Info("gRPC server stopped gracefully")
@@ -74,6 +65,7 @@ func (s *GRPCServer) Start() error {
 			s.logger.Warn("Timeout reached, forcing gRPC server stop")
 			s.grpcServer.Stop()
 		}
+
 		return nil
 
 	case err := <-serveErrCh:

@@ -9,7 +9,6 @@ import (
 
 type UserRepository interface {
 	GetByEmail(ctx context.Context, email string) (*entities.User, error)
-	UpdateLastLogin(ctx context.Context, userID uint) error
 }
 
 type userRepository struct {
@@ -26,10 +25,4 @@ func (r *userRepository) GetByEmail(ctx context.Context, email string) (*entitie
 		return nil, err
 	}
 	return &user, nil
-}
-
-func (r *userRepository) UpdateLastLogin(ctx context.Context, userID uint) error {
-	return r.db.WithContext(ctx).Model(&entities.User{}).
-		Where("id = ?", userID).
-		Update("last_login_at", gorm.Expr("NOW()")).Error
 }

@@ -92,7 +92,7 @@ This is not a full-fledged project — it’s a guided sample repo to help you u
 
 Go through each folder in the repo — especially:
 
-- `services/auth-service` : explore how the auth service is structured
+- `services/auth` : explore how the auth service is structured
 - `idl/` : check how service contracts are defined using Protocal Buffers
 - `scripts/` :  automated workflows — like protobuf codegen, build steps, etc.
 - `shared/` : common utilities used across services

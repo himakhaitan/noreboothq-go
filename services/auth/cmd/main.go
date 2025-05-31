@@ -1,6 +1,11 @@
 package main
 
 import (
+	"context"
+	"os"
+	"os/signal"
+	"syscall"
+
 	"github.com/himakhaitan/noreboothq/services/auth/config"
 	"github.com/himakhaitan/noreboothq/services/auth/entities"
 	"github.com/himakhaitan/noreboothq/services/auth/repository"
@@ -57,8 +62,12 @@ func main() {
 
 	sharedLogger.Logger().Info("Auth Service Started")
 
+	// graceful shutdown context
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer stop()
+
 	grpcServer := server.NewGRPCServer(sharedLogger.Logger(), &userRepo, cfg.Server.Port)
-	if err := grpcServer.Start(); err != nil {
+	if err := grpcServer.Start(ctx); err != nil {
 		sharedLogger.Logger().Fatal("Failed to start gRPC server", zap.Error(err))
 	}
 }
