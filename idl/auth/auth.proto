@@ -1,13 +1,16 @@
 syntax = "proto3";
 
+// This file defines the authentication service and messages for user login.
 package auth;
 
 option go_package = "github.com/himakhaitan/noreboothq/proto/auth;authpb";
 
+// The authentication service provides methods for user login.
 service AuthService {
     rpc Login(LoginRequest) returns (LoginResponse);
 }
 
+// Payload messages for authentication
 message LoginRequest {
   string email = 1;
   string password = 2;

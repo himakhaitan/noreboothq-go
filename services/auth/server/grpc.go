@@ -30,6 +30,9 @@ func NewGRPCServer(logger *zap.Logger, userRepo *repository.UserRepository, port
 	}
 }
 
+// Start initializes the gRPC server and listens for incoming connections.
+// It handles graceful shutdown on context cancellation.
+// If the context is canceled, it attempts to stop the server gracefully within a timeout period.
 func (s *GRPCServer) Start(ctx context.Context) error {
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", s.port))
 	if err != nil {

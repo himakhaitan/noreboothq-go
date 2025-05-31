@@ -45,6 +45,7 @@ func main() {
 	defer sharedLogger.Sync() // flushes logs on exit
 
 	// Initialize database connection with User model for migration
+	// You can add more models as needed
 	db, err := sharedDB.NewConnection(sharedDB.Config{
 		Host:     cfg.DB.Host,
 		Port:     cfg.DB.Port,
@@ -62,10 +63,11 @@ func main() {
 
 	sharedLogger.Logger().Info("Auth Service Started")
 
-	// graceful shutdown context
+	// Graceful shutdown context
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
 
+	// Start the gRPC server
 	grpcServer := server.NewGRPCServer(sharedLogger.Logger(), &userRepo, cfg.Server.Port)
 	if err := grpcServer.Start(ctx); err != nil {
 		sharedLogger.Logger().Fatal("Failed to start gRPC server", zap.Error(err))

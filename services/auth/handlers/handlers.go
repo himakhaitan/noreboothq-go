@@ -6,12 +6,14 @@ import (
 	"go.uber.org/zap"
 )
 
+// Package handlers provides the HTTP handlers for the authentication service.
 type AuthHandler struct {
 	authpb.UnimplementedAuthServiceServer
 	ctrl   *controllers.AuthController
 	logger *zap.Logger
 }
 
+// NewAuthHandler creates a new instance of AuthHandler with the provided AuthController and logger.
 func NewAuthHandler(ctrl *controllers.AuthController, logger *zap.Logger) *AuthHandler {
 	return &AuthHandler{
 		ctrl:   ctrl,

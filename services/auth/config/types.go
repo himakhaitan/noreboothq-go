@@ -1,5 +1,7 @@
 package config
 
+// This file defines the configuration structure for the auth service.
+// Add new configuration fields as needed, ensuring they are properly tagged for koanf.
 type AuthServiceConfig struct {
 	Server ServerConfig   `koanf:"server"`
 	JWT    JWTConfig      `koanf:"jwt"`
