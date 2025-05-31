@@ -3,3 +3,11 @@ jwt:
 
 logging:
   level: "DEBUG"
+
+database:
+  host: localhost
+  port: 5432
+  user: "noreboothq_auth"
+  password: "test@123"
+  db_name: "noreboothq_dev"
+  ssl_mode: "disable"

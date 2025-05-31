@@ -11,7 +11,6 @@ import (
 type Config struct {
 	ServiceName string
 	Environment string
-	Port        int
 }
 
 // package-level logger instance (private)
@@ -67,7 +66,6 @@ func Init(cfg Config, logLevel string) error {
 	logger = zap.New(core, options...).With(
 		zap.String("service", cfg.ServiceName),
 		zap.String("env", cfg.Environment),
-		zap.Int("port", cfg.Port),
 	)
 
 	return nil

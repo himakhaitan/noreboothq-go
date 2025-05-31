@@ -1,10 +1,20 @@
 package main
 
 import (
+	"context"
+	"os"
+	"os/signal"
+	"syscall"
+
 	"github.com/himakhaitan/noreboothq/services/auth/config"
+	"github.com/himakhaitan/noreboothq/services/auth/entities"
+	"github.com/himakhaitan/noreboothq/services/auth/repository"
+	"github.com/himakhaitan/noreboothq/services/auth/server"
 	sharedConfig "github.com/himakhaitan/noreboothq/shared/config"
+	sharedDB "github.com/himakhaitan/noreboothq/shared/db"
 	"github.com/himakhaitan/noreboothq/shared/env"
 	sharedLogger "github.com/himakhaitan/noreboothq/shared/logger"
+	"go.uber.org/zap"
 )
 
 func main() {
@@ -27,7 +37,6 @@ func main() {
 		sharedLogger.Config{
 			ServiceName: "auth-service",
 			Environment: resolved.Env,
-			Port:        cfg.Server.Port,
 		}, cfg.Log.Level,
 	)
 	if err != nil {
@@ -35,5 +44,30 @@ func main() {
 	}
 	defer sharedLogger.Sync() // flushes logs on exit
 
+	// Initialize database connection with User model for migration
+	db, err := sharedDB.NewConnection(sharedDB.Config{
+		Host:     cfg.DB.Host,
+		Port:     cfg.DB.Port,
+		User:     cfg.DB.User,
+		Password: cfg.DB.Password,
+		DBName:   cfg.DB.DBName,
+		SSLMode:  cfg.DB.SSLMode,
+	}, sharedLogger.Logger(), &entities.User{})
+	if err != nil {
+		sharedLogger.Logger().Fatal("Failed to connect to database", zap.Error(err))
+	}
+
+	// Initialize repositories
+	userRepo := repository.NewUserRepository(db)
+
 	sharedLogger.Logger().Info("Auth Service Started")
+
+	// graceful shutdown context
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer stop()
+
+	grpcServer := server.NewGRPCServer(sharedLogger.Logger(), &userRepo, cfg.Server.Port)
+	if err := grpcServer.Start(ctx); err != nil {
+		sharedLogger.Logger().Fatal("Failed to start gRPC server", zap.Error(err))
+	}
 }
